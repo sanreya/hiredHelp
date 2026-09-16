@@ -1,0 +1,22 @@
+# ==========================================
+# Root / Global Ignored Files
+# ==========================================
+.DS_Store
+Thumbs.db
+.env
+.env.local
+
+# ==========================================
+# Backend (Spring Boot / Java)
+# ==========================================
+hiredHelp/src/main/resources/application.properties
+hiredHelp/pom.xml
+
+# ==========================================
+# Frontend (React / Vue / Next.js)
+# ==========================================
+hiredHelp/frontend/node_modules/
+hiredHelp/frontend/.env
+hiredHelp/frontend/.env.local
+hiredHelp/frontend/dist/
+hiredHelp/frontend/build/

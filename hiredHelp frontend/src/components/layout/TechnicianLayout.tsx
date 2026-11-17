@@ -53,7 +53,7 @@ export function TechnicianLayout() {
         </nav>
         <div className="p-4 border-t border-slate-800">
           <div className="mb-4 px-3">
-            <p className="text-sm font-medium truncate text-white">{user?.name}</p>
+            <p className="text-sm font-medium truncate text-white">{user?.firstName} + " " + {user?.lastName} </p>
             <p className="text-xs text-slate-400">Technician</p>
           </div>
           <button

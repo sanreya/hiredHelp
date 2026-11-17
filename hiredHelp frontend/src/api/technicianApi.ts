@@ -1,6 +1,5 @@
-import { api, USE_MOCK_DATA } from "../config/api";
+import { api } from "../config/api";
 import { TechnicianProfile, TechnicianSkill, PendingRequest, ActiveJob, CompletedJob, Review } from "../types";
-import { mockPendingRequests, mockActiveJobs, mockCompletedJobsTechnician, mockReviews } from "../utils/mockData";
 
 export const technicianApi = {
   getProfile: async (): Promise<TechnicianProfile> => {

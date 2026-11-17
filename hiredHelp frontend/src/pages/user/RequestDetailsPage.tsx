@@ -86,11 +86,7 @@ export function RequestDetailsPage() {
               <p className="text-slate-700 whitespace-pre-wrap leading-relaxed">{request.description}</p>
 
               {(() => {
-                const photos: string[] = Array.isArray(request.issuePhotos)
-                  ? request.issuePhotos
-                  : typeof request.issuePhotos === 'string' && request.issuePhotos.trim()
-                    ? request.issuePhotos.split(',').map((p) => p.trim()).filter(Boolean)
-                    : [];
+                const photos: string[] = Array.isArray(request.issuePhotos) ? request.issuePhotos : [];
                 return photos.length > 0 ? (
                   <div className="mt-6 pt-6 border-t border-slate-100">
                     <h4 className="text-sm font-medium text-slate-900 mb-3 flex items-center">

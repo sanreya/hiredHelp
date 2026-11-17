@@ -81,7 +81,7 @@ export function CompletedJobsPage() {
                         <p className="flex items-center">
                           <Calendar className="h-4 w-4 mr-2 text-slate-400" />
                           {new Date(
-                            request.completedAt
+                            job.serviceRequestAssignment.completedAt
                           ).toLocaleDateString()}
                         </p>
 

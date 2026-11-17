@@ -51,7 +51,7 @@ export function CompletedJobsPage() {
                       </span>
                     </div>
                     <div className="text-sm text-slate-600 space-y-2">
-                      <p className="flex items-center"><Calendar className="h-4 w-4 mr-2 text-slate-400" /> {new Date(job.request.completedAt).toLocaleDateString()}</p>
+                      <p className="flex items-center"><Calendar className="h-4 w-4 mr-2 text-slate-400" /> {new Date(job.completedAt).toLocaleDateString()}</p>
                       <p className="flex items-center"><MapPin className="h-4 w-4 mr-2 text-slate-400" /> {job.request.customer.firstName + " " + job.request.customer.lastName}</p>
                     </div>
                   </div>

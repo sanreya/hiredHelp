@@ -1,4 +1,4 @@
-import { api, USE_MOCK_DATA } from "../config/api";
+import { api } from "../config/api";
 import { Review, CreateReviewRequest } from "../types";
 
 export const reviewApi = {

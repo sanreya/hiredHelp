@@ -192,11 +192,7 @@ export function ReviewRequestPage() {
   const customerName = `${customer?.firstName || ''} ${customer?.lastName || ''}`.trim() || 'Customer';
 
   // Parse issue photos safely
-  const photos: string[] = Array.isArray(req.issuePhotos)
-    ? req.issuePhotos
-    : typeof req.issuePhotos === 'string' && req.issuePhotos.trim()
-      ? req.issuePhotos.split(',').map((p) => p.trim()).filter(Boolean)
-      : [];
+  const photos: string[] = Array.isArray(req.issuePhotos)? req.issuePhotos : [];
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 pb-12">

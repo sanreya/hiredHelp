@@ -100,6 +100,7 @@ export interface PendingRequest {
   requestedAt: string;
   respondedAt: string | null;
   rejectionReason: string | null;
+  issuePhotos: string[];
 }
 
 export interface ActiveJob {

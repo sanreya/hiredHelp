@@ -8,6 +8,7 @@
 *.war
 *.ear
 hs_err_pid*
+**/application.properties
 
 # =========================
 # Node.js / npm

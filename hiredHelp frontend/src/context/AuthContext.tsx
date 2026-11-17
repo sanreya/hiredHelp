@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User } from '../types';
+import { AuthResponse, User } from '../types';
 import { authApi } from '../api/authApi';
 import { userApi } from '../api/userApi';
 import { useToast } from './ToastContext';
@@ -8,7 +8,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (credentials: any) => Promise<void>;
+  login: (credentials: { email: string; password: string }, expectedRole: 'USER' | 'TECHNICIAN') => Promise<void>;
   logout: () => void;
 }
 
@@ -40,20 +40,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const login = async (credentials: any) => {
+  const login = async (credentials: { email: string; password: string }, expectedRole: 'USER' | 'TECHNICIAN') => {
+    let data: AuthResponse;
     try {
-      const data = await authApi.login(credentials);
-      localStorage.setItem('accessToken', data.token);
-      localStorage.setItem('userId', String(data.userId));
-      localStorage.setItem('role', data.role);
-
-      // Fetch full user profile now that the token is stored
-      await loadUser();
-      toast('Login successful', 'success');
+      data = await authApi.login(credentials);
     } catch (error) {
       toast('Invalid credentials', 'error');
       throw error;
     }
+
+    if (data.role !== expectedRole) {
+      const actualRole = data.role === 'TECHNICIAN' ? 'Technician' : data.role === 'USER' ? 'User' : 'Admin';
+      toast(`This account is registered as ${actualRole}. Select the matching role to continue.`, 'error');
+      throw new Error('Selected role does not match account role');
+    }
+
+    localStorage.setItem('accessToken', data.token);
+    localStorage.setItem('userId', String(data.userId));
+    localStorage.setItem('role', data.role);
+
+    await loadUser();
+    toast('Login successful', 'success');
   };
 
   const logout = () => {

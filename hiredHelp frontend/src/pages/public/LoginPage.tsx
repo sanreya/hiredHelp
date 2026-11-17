@@ -6,8 +6,9 @@ import { Input } from '../../components/ui/Input';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 
 export function LoginPage() {
-  const [email, setEmail] = useState('sanjana@gmail.com');
-  const [password, setPassword] = useState('password123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [selectedRole, setSelectedRole] = useState<'USER' | 'TECHNICIAN'>('USER');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -16,14 +17,13 @@ export function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await login({ email, password });
-      const role = email.includes('tech') ? 'TECHNICIAN' : 'USER';
-      if (role === 'TECHNICIAN') {
+      await login({ email, password }, selectedRole);
+      if (selectedRole === 'TECHNICIAN') {
         navigate('/technician/dashboard');
       } else {
         navigate('/user/dashboard');
       }
-    } catch (error) {
+    } catch {
       setIsLoading(false);
     }
   };
@@ -33,10 +33,35 @@ export function LoginPage() {
       <Card className="w-full max-w-md shadow-xl border-slate-100">
         <CardHeader className="space-y-1 text-center py-8">
           <CardTitle className="text-3xl font-bold tracking-tight text-slate-900">Welcome back</CardTitle>
-          <p className="text-slate-500">Enter your email and password to login</p>
+          <p className="text-slate-500">Sign in to your {selectedRole === 'USER' ? 'user' : 'technician'} account</p>
         </CardHeader>
         <CardContent className="pb-8">
           <form onSubmit={handleSubmit} className="space-y-5">
+            <fieldset className="space-y-2">
+              <legend className="block text-sm font-medium text-slate-700">Continue as</legend>
+              <div className="grid grid-cols-2 rounded-full bg-slate-100 p-1">
+                {(['USER', 'TECHNICIAN'] as const).map((role) => (
+                  <label
+                    key={role}
+                    className={`cursor-pointer rounded-full px-4 py-2 text-center text-sm font-semibold transition-colors focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 ${
+                      selectedRole === role
+                        ? 'bg-white text-indigo-700 shadow-sm'
+                        : 'text-slate-500 hover:text-slate-700'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="accountType"
+                      value={role}
+                      checked={selectedRole === role}
+                      onChange={() => setSelectedRole(role)}
+                      className="sr-only"
+                    />
+                    {role === 'USER' ? 'User' : 'Technician'}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
             <Input
               label="Email"
               type="email"
@@ -62,9 +87,6 @@ export function LoginPage() {
             <Link to="/register" className="text-indigo-600 font-semibold hover:text-indigo-700 hover:underline">
               Register
             </Link>
-          </div>
-          <div className="mt-6 p-4 bg-slate-50 rounded-lg text-xs text-slate-500 text-center">
-            <p>Hint: Use <span className="font-mono bg-slate-200 px-1 py-0.5 rounded">tech@hiredhelp.com</span> for technician role.</p>
           </div>
         </CardContent>
       </Card>

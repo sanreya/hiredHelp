@@ -26,8 +26,8 @@ const validateRegistration = (formData: {
   if (!formData.lastName.trim()) {
     errors.lastName = 'Last name is required.';
   }
-  if (!/^\+?[\d\s().-]+$/.test(phone) || phoneDigits.length < 7 || phoneDigits.length > 15) {
-    errors.phone = 'Enter a valid phone number with 7 to 15 digits.';
+  if (!/^\+?[\d\s().-]+$/.test(phone) || phoneDigits.length != 10) {
+    errors.phone = 'Enter a valid phone number with 10 digits.';
   }
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
@@ -35,12 +35,12 @@ const validateRegistration = (formData: {
   }
 
   if (
-    formData.password.length < 8 ||
+    formData.password.length < 3 ||
     !/[a-z]/.test(formData.password) ||
     !/[A-Z]/.test(formData.password) ||
     !/\d/.test(formData.password)
   ) {
-    errors.password = 'Use at least 8 characters, including uppercase and lowercase letters and a number.';
+    errors.password = 'Use at least 3 characters, including uppercase and lowercase letters and a number.';
   }
   if (!formData.address.trim()) {
     errors.address = 'Address is required.';

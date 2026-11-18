@@ -8,7 +8,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (credentials: { email: string; password: string }, expectedRole: 'USER' | 'TECHNICIAN') => Promise<void>;
+  login: (credentials: { email: string; password: string }) => Promise<AuthResponse['role']>;
   logout: () => void;
 }
 
@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const login = async (credentials: { email: string; password: string }, expectedRole: 'USER' | 'TECHNICIAN') => {
+  const login = async (credentials: { email: string; password: string }): Promise<AuthResponse['role']> => {
     let data: AuthResponse;
     try {
       data = await authApi.login(credentials);
@@ -49,18 +49,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw error;
     }
 
-    if (data.role !== expectedRole) {
-      const actualRole = data.role === 'TECHNICIAN' ? 'Technician' : data.role === 'USER' ? 'User' : 'Admin';
-      toast(`This account is registered as ${actualRole}. Select the matching role to continue.`, 'error');
-      throw new Error('Selected role does not match account role');
-    }
-
     localStorage.setItem('accessToken', data.token);
     localStorage.setItem('userId', String(data.userId));
     localStorage.setItem('role', data.role);
 
     await loadUser();
     toast('Login successful', 'success');
+    return data.role;
   };
 
   const logout = () => {
